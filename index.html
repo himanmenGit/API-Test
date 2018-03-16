@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>API Test</title>
+</head>
+<body>
+	<div id="wrap">
+			<h1>WRF API Test!</h1>
+			<div class="artists-container">
+				<h2>Artist List</h2>
+			</div>
+	</div>
+
+	<div id="template-artist">
+		<span class="artist-pk"></span>
+		<span class="artist-melon-id"></span>
+		<span class="artist-name"></span>
+		<span class="artist-img_profile"></span>
+	</div>
+
+	<script type="text/javascript" src="js/axios.js"></script>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript">
+	// API 에 HTTP GET 요청
+		axios.get('http://localhost:8000/api/artist')
+		.then(function (response) {
+			var artists = response.data.artists;
+			// console.log(response.data);
+			for (var i = 0; i < artists.length; i++){
+				var currentArtist = artists[i];
+				console.log(currentArtist)
+
+				// template-artist라는 ID를 가진 요소를 복제
+				var curArtistElement = $('#template-artist').clone();
+
+				// 해당 요소에서 artist-melon-id, artist-name이라는 클래스를 가진 요소의 text를 채움
+				curArtistElement.find('.artist-pk').text(currentArtist.id)
+				curArtistElement.find('.artist-melon-id').text(currentArtist.melon_id)
+				curArtistElement.find('.artist-name').text(currentArtist.name)
+				curArtistElement.find('.artist-img_profile').text(currentArtist.img_profile)
+
+				// .artists-container내부에 위 요소를 삽입
+				$('.artists-container').append(curArtistElement);
+			}
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+	</script>
+</body>
+</html>
